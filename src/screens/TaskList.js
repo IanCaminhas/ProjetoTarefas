@@ -1,9 +1,14 @@
 import React, {Component} from 'react'
 import {View, Text, ImageBackground, StyleSheet} from  'react-native'
+
+import commonStyles from '../CommonStyle'
 import todayImage from '../../assets/imgs/today.jpg'
+
+import Task from '../components/Task'
 
 import moment from  'moment'
 import 'moment/locale/pt-br'
+
 
 export default class TaskList extends Component {
     render() {
@@ -12,13 +17,15 @@ export default class TaskList extends Component {
             <View style={styles.container}>
                 <ImageBackground source={todayImage} style={styles.background}>
                 <View style={styles.titleBar}>
-                    <Text>Hoje</Text>
-                    <Text>{today}</Text>
+                    <Text style={styles.title}>Hoje</Text>
+                    <Text style={styles.subtitle}>{today}</Text>
                     </View>
                 </ImageBackground>
               
                 <View style={styles.taskList}>
-                    <Text>TaskList</Text>
+                    <Task desc="Comprar Livro" estimateAt={new Date()} doneAt={new Date()} />
+                    <Task desc="Ler Livro" estimateAt={new Date()} doneAt={null} />
+                    
                 </View>
 
             </View>
@@ -40,6 +47,20 @@ const styles = StyleSheet.create({
     titleBar: {
         flex: 1,
         justifyContent: 'flex-end' //sempre vai mexer com main axis. main axis pode ser a coluna(padrão) ou linha
+    },
+    title: {
+        fontFamily: commonStyles.fontFamily,
+        color: commonStyles.colors.secondary,
+        fontSize: 50,
+        marginLeft: 20,
+        marginBottom: 20
+    },
+    subtitle: {
+        fontFamily: commonStyles.fontFamily,
+        color: commonStyles.colors.secondary,
+        fontSize: 20,
+        marginLeft: 20,
+        marginBottom: 20
     }
 
 });
