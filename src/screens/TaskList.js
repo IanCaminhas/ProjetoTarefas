@@ -25,7 +25,6 @@ export default class TaskList extends Component {
                 <View style={styles.taskList}>
                     <Task desc="Comprar Livro" estimateAt={new Date()} doneAt={new Date()} />
                     <Task desc="Ler Livro" estimateAt={new Date()} doneAt={null} />
-                    
                 </View>
 
             </View>
@@ -61,7 +60,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 20,
         marginBottom: 20
-    }
+    },
+    
 
 });
 
