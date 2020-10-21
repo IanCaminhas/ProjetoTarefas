@@ -7,9 +7,7 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 
 
-
 export default props => {
-
 
     const doneOrNotStyle = props.doneAt != null ?
         {textDecorationLine: 'line-through'}: {}
