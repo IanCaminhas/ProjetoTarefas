@@ -11,12 +11,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from  'moment'
 import 'moment/locale/pt-br'
 
+import AddTask from './AddTask'
+
 
 export default class TaskList extends Component {
 
     state ={
         showDoneTasks: true,
         visibleTasks:[],
+        showAddTask:true,
         tasks:[{
             id: Math.random(),
             desc: 'Comprar Livro de React Native',
@@ -70,6 +73,7 @@ export default class TaskList extends Component {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
             <View style={styles.container}>
+                <AddTask isVisible={this.state.showAddTask} onCancel={()=> this.setState({showAddTask: false})} />
                 <ImageBackground source={todayImage} style={styles.background}>
 
                 <View style ={styles.iconBar}>
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     iconBar: {
-        flexDirection: 'row', //troca do main-axis
+        flexDirection: 'row', 
         marginHorizontal: 20,
         justifyContent:'flex-end',
         marginTop: Platform.OS ==='ios' ? 40 : 10
