@@ -19,7 +19,7 @@ export default class TaskList extends Component {
     state ={
         showDoneTasks: true,
         visibleTasks:[],
-        showAddTask:true,
+        showAddTask:false,
         tasks:[{
             id: Math.random(),
             desc: 'Comprar Livro de React Native',
@@ -96,6 +96,16 @@ export default class TaskList extends Component {
                               renderItem={({item}) => <Task {...item} toggleTask={this.toggleTask} />}  />
                 </View>
 
+                <TouchableOpacity style={styles.addButton}
+                activeOpcity={0.7}
+                onPress={()=> this.setState({showAddTask:true})}>
+                    <Icon name="plus" size={20}
+                    color={commonStyles.colors.secondary}/>
+                </TouchableOpacity>
+
+
+
+
             </View>
         )
     }
@@ -104,7 +114,7 @@ export default class TaskList extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1 //cresça com a proporção de 1 
+        flex:1 
     },
     background: {
         flex:3
@@ -135,6 +145,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         justifyContent:'flex-end',
         marginTop: Platform.OS ==='ios' ? 40 : 10
+
+    },
+    addButton:{
+        position:'absolute',
+        right:30,
+        bottom:30,
+        width:50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: commonStyles.colors.today,
+        justifyContent: 'center',
+        alignItems:'center'
 
     }
     
