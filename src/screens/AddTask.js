@@ -23,6 +23,27 @@ export default class addTask extends Component {
         ...initialState
     }
 
+    save = () =>{
+
+        //Posso fazer isso aqui
+        //const newTask = {
+            //...initialState
+        //}
+        
+        const newTask = {
+            desc: this.state.desc,
+            date: this.state.date
+        }
+
+        //quando a função estiver setada em (this.props.onSave), chama a função
+        //isso é importante para não chamar função que não existe
+        this.props.onSave && this.props.onSave(newTask) 
+
+        //reiniciar o estado do modal
+        this.setState({...initialState})
+
+    }
+
     getDateTimePicker = () =>{
         let datePicker = <DateTimePicker value={this.state.date}
             onChange={(_,date)=> this.setState({date, showDatePicker:false})}
@@ -70,7 +91,7 @@ export default class addTask extends Component {
                     <TouchableOpacity onPress={this.props.onCancel}>
                         <Text style={styles.button}>Cancelar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.save}>
                         <Text style={styles.button}>Salvar</Text>
                     </TouchableOpacity>
                 </View>

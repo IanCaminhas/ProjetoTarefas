@@ -1,5 +1,13 @@
 import React, {Component} from 'react'
-import {View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Platform,Touchable} from  'react-native'
+import {View, 
+        Text, 
+        ImageBackground, 
+        StyleSheet, 
+        FlatList, 
+        TouchableOpacity, 
+        Platform,
+        Touchable,
+        Alert} from  'react-native'
 
 import commonStyles from '../CommonStyle'
 import todayImage from '../../assets/imgs/today.jpg'
@@ -38,8 +46,6 @@ export default class TaskList extends Component {
         this.filterTasks()        
 
     }
-        
-
     toggleFilter = () => {
         this.setState({showDoneTasks: !this.state.showDoneTasks}, this.filterTasks)
     }
@@ -69,11 +75,38 @@ export default class TaskList extends Component {
 
     }
 
+    addTask = newTask =>{
+        //garantindo que !newTask.desc tem conteúdo
+        // garantindo que !newTask.desc.trim() só tem espaço em branco
+        if(!newTask.desc || !newTask.desc.trim()){
+            Alert.alert('Dados inválidos', 'Descrição não informada!')
+            return
+        }
+        //clonando as tasks 
+        const tasks = [...this.state.tasks]
+        //inserindo a task no array
+        tasks.push({
+            id: Math.random(),
+            desc: newTask.desc,
+            estimateAt: newTask.date,
+            doneAt: null
+        })
+
+        //atualizando o array de tarefas e fechando o modal com showAddTask
+        //depois que executar, quero atualizar o filterTasks... ora, tem task nova... ou seja, quero que as tasks tenha essa nova
+        this.setState({tasks, showAddTask: false }, this.filterTasks)
+
+    }
+
+
+
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
             <View style={styles.container}>
-                <AddTask isVisible={this.state.showAddTask} onCancel={()=> this.setState({showAddTask: false})} />
+                <AddTask isVisible={this.state.showAddTask} 
+                    onCancel={()=> this.setState({showAddTask: false})}
+                    onSave= {this.addTask} />
                 <ImageBackground source={todayImage} style={styles.background}>
 
                 <View style ={styles.iconBar}>
