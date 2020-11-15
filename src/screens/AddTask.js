@@ -6,18 +6,46 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Platform
 } from 'react-native'
 
+import moment from 'moment'
 import commonStyles from '../CommonStyle'
 
-const initialState= {desc: ''}
+import DateTimePicker from '@react-native-community/datetimepicker'
+
+const initialState= {desc: '', date: new Date(), showDatePicker: false}
 
 export default class addTask extends Component {
 
     state ={
         ...initialState
     }
+
+    getDateTimePicker = () =>{
+        let datePicker = <DateTimePicker value={this.state.date}
+            onChange={(_,date)=> this.setState({date, showDatePicker:false})}
+            mode='date'/>
+
+        const dateString = moment(this.state.date).format('ddd, D [de] MMMM [de] YYYY')
+
+        if(Platform.OS==='android'){
+            datePicker =(
+                <View>
+                    <TouchableOpacity onPress={()=>this.setState({showDatePicker: true})}>
+                        <Text style={styles.date}>
+                            {dateString}
+                        </Text>
+                    </TouchableOpacity>
+                    {this.state.showDatePicker && datePicker}
+                </View>
+            )
+                            
+        }
+        return datePicker
+    }
+
 
     render(){
         return ( 
@@ -37,6 +65,7 @@ export default class addTask extends Component {
                     onChangeText={desc => this.setState({desc})}
                     value={this.state.desc}
                     />
+                {this.getDateTimePicker()}
                 <View style= {styles.buttons}>
                     <TouchableOpacity onPress={this.props.onCancel}>
                         <Text style={styles.button}>Cancelar</Text>
@@ -92,7 +121,11 @@ const styles = StyleSheet.create({
         margin:20,
         marginRight:30,
         color: commonStyles.colors.today
-    }
-    
+    },
+    date: {
+        fontFamily: commonStyles.fontFamily,
+        fontSize: 20,
+        marginLeft: 15
+    },
 
 })
