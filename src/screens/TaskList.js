@@ -98,6 +98,14 @@ export default class TaskList extends Component {
 
     }
 
+    deleteTask = id =>{
+        //filtra pra mim todas as tasks que tem o id diferente do id passado
+        //lembrete: filter gera um novo array
+        const tasks = this.state.tasks.filter(task => task.id !== id)
+        //garantindo que a task foi excluída das tasks visiveis
+        this.setState({tasks}, this.filterTasks)
+
+    }
 
 
     render() {
@@ -126,7 +134,7 @@ export default class TaskList extends Component {
                 <View style={styles.taskList}>
                     <FlatList data={this.state.visibleTasks} 
                               keyExtractor={item => `${item.id}`}
-                              renderItem={({item}) => <Task {...item} toggleTask={this.toggleTask} />}  />
+                              renderItem={({item}) => <Task {...item} toggleTask={this.toggleTask} onDelete={this.deleteTask} />}  />
                 </View>
 
                 <TouchableOpacity style={styles.addButton}
