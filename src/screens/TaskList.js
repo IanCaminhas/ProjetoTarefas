@@ -27,17 +27,14 @@ const initialState ={
         visibleTasks:[],
         showAddTask:false,
         tasks:[]
-
 }
-
 
 export default class TaskList extends Component {
 
     state ={
         ...initialState       
     }
-    
-    
+     
     componentDidMount= async() =>{
         //this.filterTasks()
         const stateString = await AsyncStorage.getItem('tasksState')       
