@@ -6,7 +6,8 @@ import {
         View, 
         TextInput, 
         TouchableOpacity,
-        Platform
+        Platform,
+        Alert
 } from 'react-native' 
 
 import backgroundImage from '../../assets/imgs/login.jpg'
@@ -19,10 +20,18 @@ export default class Auth extends Component {
         email:'',
         password: '',
         confirmPassword:'',
-        stageNew: true //atributo que diz se o usuário está logando ou criando novo usuário
+        stageNew: false //atributo que diz se o usuário está logando ou criando novo usuário
 
     }
     
+    signOrSignup = () =>{
+        if(this.state.stageNew){
+            Alert.Alert('Sucesso!', 'Criar conta')
+        }else {
+            Alert.Alert('Sucesso!', 'Logar')
+        }
+    }
+
     render(){
         return (
             <ImageBackground source={backgroundImage}
@@ -50,7 +59,7 @@ export default class Auth extends Component {
                          style={styles.input} secureTextEntry={true}
                          onChangeText={confirmPassword => this.setState({confirmPassword})}/>
                     }
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.signOrSignup}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}>
                                 {this.state.stageNew ? 'Registrar': 'Entrar'}
@@ -58,6 +67,12 @@ export default class Auth extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity style={{padding: 10}}
+                    onPress={() => this.setState({stageNew: !this.state.stageNew})}>
+                    <Text style={styles.buttonText}>
+                        {this.state.stageNew ? 'Já possui conta ?': 'Ainda não possui conta ?'}
+                    </Text>
+                </TouchableOpacity>
 
             </ImageBackground>
         )
