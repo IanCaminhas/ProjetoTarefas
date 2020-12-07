@@ -1,4 +1,3 @@
-import React from 'react'
 import {createAppContainer, createSwitchNavigator} from 'react-navigation'
 
 import Auth from './screens/Auth'
@@ -20,7 +19,7 @@ const mainRoutes ={
 
 //meu navegador
 const mainNavigator = createSwitchNavigator(mainRoutes, {
-    initialRouteName: 'Home' //tela inicial quando o app for carregado
+    initialRouteName: 'Auth' //tela inicial quando o app for carregado
 })
 
 export default createAppContainer(mainNavigator)
