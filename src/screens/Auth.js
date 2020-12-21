@@ -10,11 +10,10 @@ import {
 } from 'react-native' 
 import axios from 'axios'
 
-
 const initialState ={
     name:'',
-    email:'',
-    password: '',
+    email:'ri@gmail.com',
+    password: '123456',
     confirmPassword:'',
     stageNew: false //atributo que diz se o usuário está logando ou criando novo usuário
 }
