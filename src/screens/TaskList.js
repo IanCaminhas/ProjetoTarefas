@@ -84,48 +84,96 @@ export default class TaskList extends Component {
 
     }
 
-    toggleTask = taskId =>{
-        const tasks =[...this.state.tasks]
-        tasks.forEach(task =>{
-            if(task.id==taskId){
-                task.doneAt = task.doneAt ? null : new Date()
-            }
-        })
-        this.setState({tasks}, this.filterTasks)
+    // toggleTask = taskId =>{
+    //     const tasks =[...this.state.tasks]
+    //     tasks.forEach(task =>{
+    //         if(task.id==taskId){
+    //             task.doneAt = task.doneAt ? null : new Date()
+    //         }
+    //     })
+    //     this.setState({tasks}, this.filterTasks)
 
+    // }
+
+    toggleTask = async taskId =>{
+        try{
+            //os estados são alternados com ${server}/tasksToggle/${taskId}
+            //pendente para concluído e vice-versa 
+            await axios.put(`${server}/tasks/${taskId}/toggle`)
+            //após a alternância, vai pegar o estado mais novo da aplicação
+            this.loadTasks()
+
+        }catch(e){
+            showError(e)
+        }
     }
 
-    addTask = newTask =>{
-        //garantindo que !newTask.desc tem conteúdo
-        // garantindo que !newTask.desc.trim() só tem espaço em branco
+    // addTask = newTask =>{
+    //     //garantindo que !newTask.desc tem conteúdo
+    //     // garantindo que !newTask.desc.trim() só tem espaço em branco
+    //     if(!newTask.desc || !newTask.desc.trim()){
+    //         Alert.alert('Dados inválidos', 'Descrição não informada!')
+    //         return
+    //     }
+    //     //clonando as tasks 
+    //     const tasks = [...this.state.tasks]
+    //     //inserindo a task no array
+    //     tasks.push({
+    //         id: Math.random(),
+    //         desc: newTask.desc,
+    //         estimateAt: newTask.date,
+    //         doneAt: null
+    //     })
+
+    //     //atualizando o array de tarefas e fechando o modal com showAddTask
+    //     //depois que executar, quero atualizar o filterTasks... ora, tem task nova... ou seja, quero que as tasks tenha essa nova
+    //     this.setState({tasks, showAddTask: false }, this.filterTasks)
+
+    // }
+
+    addTask = async newTask =>{
+        
         if(!newTask.desc || !newTask.desc.trim()){
             Alert.alert('Dados inválidos', 'Descrição não informada!')
             return
         }
-        //clonando as tasks 
-        const tasks = [...this.state.tasks]
-        //inserindo a task no array
-        tasks.push({
-            id: Math.random(),
-            desc: newTask.desc,
-            estimateAt: newTask.date,
-            doneAt: null
-        })
 
-        //atualizando o array de tarefas e fechando o modal com showAddTask
-        //depois que executar, quero atualizar o filterTasks... ora, tem task nova... ou seja, quero que as tasks tenha essa nova
-        this.setState({tasks, showAddTask: false }, this.filterTasks)
+        try{
+            await axios.post(`${server}/tasks`, {
+                desc:newTask.desc,
+                estimateAt: newTask.date,
+            })
+        
+         //showAddTask: false -> quero sumir com o modal
+        //depois de sumir com o modal, chamar o callback loadTasks
+        //depois de carregar, vou carregar as tarefas com this.loadTasks 
+        this.setState({showAddTask: false }, this.loadTasks)
+
+        }catch(e){
+            showError(e)
+        }
+    }
+
+    // deleteTask = taskId =>{
+    //     //filtra pra mim todas as tasks que tem o id diferente do id passado
+    //     //lembrete: filter gera um novo array
+    //     const tasks = this.state.tasks.filter(task => task.id !== taskId)
+    //     //garantindo que a task foi excluída das tasks visiveis
+    //     this.setState({tasks}, this.filterTasks)
+    // }
+
+    deleteTask = async taskId =>{
+        try{
+            await axios.delete(`${server}/tasks/${taskId}`)
+            this.loadTasks()
+
+        }catch(e){
+            showError(e)
+        }
 
     }
 
-    deleteTask = id =>{
-        //filtra pra mim todas as tasks que tem o id diferente do id passado
-        //lembrete: filter gera um novo array
-        const tasks = this.state.tasks.filter(task => task.id !== id)
-        //garantindo que a task foi excluída das tasks visiveis
-        this.setState({tasks}, this.filterTasks)
 
-    }
 
 
     render() {
