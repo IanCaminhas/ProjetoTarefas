@@ -81,6 +81,32 @@ export default class Auth extends Component {
 
 
     render(){
+        //esse array vai ter validações. 
+        //Cada validação vai retornar True ou False. True que a validação foi realizada de forma correta.
+        //False que o formulário ainda não está válido
+        const validations = []
+
+        //validacao -> o email tem que ter o arroba
+        validations.push(this.state.email && this.state.email.includes('@'))
+        
+        //a senha tem que ser maior de 6 dígitos
+        validations.push(this.state.password && this.state.password >=6)
+
+        if(this.state.stageNew){
+            //nome não pode ser null e deve possuir tamanho maior que 3 caratcteres
+            validations.push(this.state.name && this.state.name.trim().length> 3)
+
+            //a confirmação de senha tem que existir
+            validations.push(this.state.confirmPassword)
+            //a senha tem que ser igual à confirmação de senha
+            validations.push(this.state.password === this.state.confirmPassword)
+
+        }
+
+        //só tenho um formulário válido se todas as expressões forem verdadeiras
+        //se tiver uma validação falsa, o validForm será falso
+        const validForm = validations.reduce((t,a)=> t && a)
+
         return (
             <ImageBackground source={backgroundImage}
                 style={styles.background}>
@@ -107,8 +133,9 @@ export default class Auth extends Component {
                          style={styles.input} secureTextEntry={true}
                          onChangeText={confirmPassword => this.setState({confirmPassword})}/>
                     }
-                    <TouchableOpacity onPress={this.signOrSignup}>
-                        <View style={styles.button}>
+                    <TouchableOpacity onPress={this.signOrSignup}
+                    disabled={!validForm}>
+                        <View style={[styles.button, validForm ?{}:{backgroundColor:'#AAA'}]}>
                             <Text style={styles.buttonText}>
                                 {this.state.stageNew ? 'Registrar': 'Entrar'}
                             </Text>
