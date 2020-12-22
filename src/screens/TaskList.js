@@ -51,8 +51,11 @@ export default class TaskList extends Component {
     //funcao responsável por carregar as tarefas
     loadTasks= async () =>{
         try{
-            //vou pegar as tarefas estimadas com data até o final do dia
-            const maxDate = moment().format('YYYY-MM-DD 23:59:59')
+            //adicionando dias para termos a formatação condicional ? 0 dias ? 7 dias
+            //menuRoutes ->  screen: props => <TaskList title='Hoje' daysAhead={0} {...props}/>,
+            const maxDate = moment()
+                .add({days: this.props.daysAhead})            
+                .format('YYYY-MM-DD 23:59:59')
             const res = await axios.get(`${server}/tasks?date=${maxDate}`)
             //res.data traz as tasks
             this.setState({tasks: res.data}, this.filterTasks)
@@ -173,9 +176,6 @@ export default class TaskList extends Component {
 
     }
 
-
-
-
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
@@ -186,6 +186,12 @@ export default class TaskList extends Component {
                 <ImageBackground source={todayImage} style={styles.background}>
 
                 <View style ={styles.iconBar}>
+
+                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
+                        <Icon name = 'bars'
+                              size= {20} color={commonStyles.colors.secondary} />
+                    </TouchableOpacity>
+
                     <TouchableOpacity onPress= {this.toggleFilter}>
                         <Icon name = {this.state.showDoneTasks ? 'eye': 'eye-slash'}
                               size= {20} color={commonStyles.colors.secondary} />
@@ -194,7 +200,7 @@ export default class TaskList extends Component {
                 </View>
                 
                 <View style={styles.titleBar}>
-                    <Text style={styles.title}>Hoje</Text>
+                    <Text style={styles.title}>{this.props.title}</Text>
                     <Text style={styles.subtitle}>{today}</Text>
                     </View>
                 </ImageBackground>
@@ -252,7 +258,7 @@ const styles = StyleSheet.create({
     iconBar: {
         flexDirection: 'row', 
         marginHorizontal: 20,
-        justifyContent:'flex-end',
+        justifyContent:'space-between', //os dois ícones(filter e drawerNavigator) com espaço no meio
         marginTop: Platform.OS ==='ios' ? 40 : 10
 
     },
