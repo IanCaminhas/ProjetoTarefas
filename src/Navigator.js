@@ -6,6 +6,26 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation'
 import {createDrawerNavigator} from 'react-navigation-drawer'
 import Auth from './screens/Auth'
 import TaskList from './screens/TaskList' 
+import Menu from './screens/Menu'
+import commonStyles from  './CommonStyle'
+
+const menuConfig = {
+    initialRouteName: 'Today', //primeira tela ao logar
+    contentComponent: Menu,
+    contentOptions: {
+        //quando a opção no drawer estiver não estiver ativa 
+        labelStyle: {
+            fontFamily: commonStyles.fontFamily,
+            fontWeight:'normal',
+            fontSize:20
+        },
+        //quando a opção no drawer estiver ativa
+        activeLabelStyle:{
+            color:'#080', //verde
+            fontWeight:'bold',
+        }
+    }
+}
 
 
 // daysAhead que vai filtrar a info. Hoje ? 7 dias para frente ? 30 dias para frente ?
@@ -43,7 +63,7 @@ const menuRoutes = {
     },
 }
 
-const menuNavigator = createDrawerNavigator(menuRoutes)
+const menuNavigator = createDrawerNavigator(menuRoutes,menuConfig)
 
 const mainRoutes ={
     Auth:{
