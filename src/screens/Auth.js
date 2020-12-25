@@ -9,6 +9,7 @@ import {
         Alert
 } from 'react-native' 
 import axios from 'axios'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const initialState ={
     name:'',
@@ -65,11 +66,16 @@ export default class Auth extends Component {
                 email:this.state.email,
                 password: this.state.password,
             })
+            //quando o usuário se logar, vai ser inserido no AsyncStorage a informação que veio do back-end:
+            //nome, e-mail e o token
+            AsyncStorage.setItem('userData', JSON.stringify(res.data))
+
+
             //bearer(portador) -> toda requsição posterior terá o token 
             //Essa String `bearer ${res.data.token}` está setada na header Authorization
             //`bearer ${res.data.token}` authorization será enviada em qualquer nova requisição futura
             axios.defaults.headers.common['Authorization']= `bearer ${res.data.token}`
-            
+
             //caso a autenticação der certo, navegue para a tela Home
             //além disso, passa os dados da resposta da requisição em res.data
             this.props.navigation.navigate('Home', res.data)
